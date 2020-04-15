@@ -1,5 +1,7 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include<string.h>
+#include<ctype.h>
 
 int htoi(const char s[])  
 {  
@@ -42,9 +44,13 @@ int main()
     sprintf(cmdStr, "i2cget -y %d 0x%x 0x%x",1, 0x6c, 0x0);
     printf("%s\n", cmdStr);
     sprintf(cmdStr, "0x0141\n");
-    unsigned int test = strtol(cmdStr, ptr, 16);
+    ptr = cmdStr + strlen(cmdStr) + 1;
+    unsigned int test = strtol(cmdStr, &ptr, 16);
     printf("test = 0x%x\n", test);
     printf("test = %d\n", test);
+
+    unsigned long lint = 0xfabc;
+    printf("lint = 0x%lx\n", lint);
     return 0;
 }
 
