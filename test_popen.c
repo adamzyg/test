@@ -4,9 +4,11 @@
 int main()
 {
     char cmdStr[100];
-    sprintf(cmdStr, "sh -c 'echo \"1\\nlufbo\\n\" | ./test.sh");
-    FILE *Fpr = popen(cmdStr, "r");
+    FILE *Fpr;
     char buf[128];
+    memset(buf, 0, 128);
+    sprintf(cmdStr, "less /var/log/dpkg.log");
+    Fpr = popen(cmdStr, "w");
     memset(buf, 0, 128);
     while (fgets(buf, 128, Fpr) != NULL)
     {
