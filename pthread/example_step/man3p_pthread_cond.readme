@@ -1,0 +1,48 @@
+Multiple Awakenings by Condition Signal
+On  a multi-processor, it may be impossible for an implementation of pthread_cond_signal() to avoid the
+unblocking of more than one thread blocked on a condition variable. For example, consider the following
+partial implementation of pthread_cond_wait() and pthread_cond_signal(), executed by two threads in the
+order given. One thread is trying to wait on the condition variable, another is concurrently  executing
+pthread_cond_signal(), while a third thread is already waiting.
+
+	pthread_cond_wait(mutex, cond):
+	value = cond->value; /* 1 */
+	pthread_mutex_unlock(mutex); /* 2 */
+	pthread_mutex_lock(cond->mutex); /* 10 */
+	if (value == cond->value) { /* 11 */
+		me->next_cond = cond->waiter;
+		cond->waiter = me;
+		pthread_mutex_unlock(cond->mutex);
+		unable_to_run(me);
+	} else
+	pthread_mutex_unlock(cond->mutex); /* 12 */
+	pthread_mutex_lock(mutex); /* 13 */
+
+
+	pthread_cond_signal(cond):
+	pthread_mutex_lock(cond->mutex); /* 3 */
+	cond->value++; /* 4 */
+	if (cond->waiter) { /* 5 */
+		sleeper = cond->waiter; /* 6 */
+		cond->waiter = sleeper->next_cond; /* 7 */
+		able_to_run(sleeper); /* 8 */
+	}
+	pthread_mutex_unlock(cond->mutex); /* 9 */
+
+
+The  effect  is  that  more  than  one  thread  can  return  from  its  call  to pthread_cond_wait() or
+pthread_cond_timedwait() as a result of one call to pthread_cond_signal(). This effect is called  "spu‐
+rious  wakeup".   Note  that the situation is self-correcting in that the number of threads that are so
+awakened is finite; for example, the next thread to call  pthread_cond_wait()  after  the  sequence  of
+events above blocks.
+
+While  this  problem  could be resolved, the loss of efficiency for a fringe condition that occurs only
+rarely is unacceptable, especially given that one has to check the predicate associated with  a  condi‐
+tion  variable  anyway. Correcting this problem would unnecessarily reduce the degree of concurrency in
+this basic building block for all higher-level synchronization operations.
+
+An added benefit of allowing spurious wakeups is that applications are forced to code a predicate-test‐
+ing-loop  around  the  condition  wait.  This also makes the application tolerate superfluous condition
+broadcasts or signals on the same condition variable that may be coded in some other part of the appli‐
+cation.  The  resulting  applications  are thus more robust. Therefore, IEEE Std 1003.1-2001 explicitly
+documents that spurious wakeups may occur.
