@@ -52,6 +52,7 @@ enum log_levels {
 	LOG_LEVEL_NONE = 0,
 	LOG_LEVEL_DEBUG,    /**< Debug. */
 	LOG_LEVEL_INFO,     /**< Informational. */
+	LOG_LEVEL_ERROR,     /**< Informational. */
 };
 
 /**
@@ -139,7 +140,17 @@ log_info(const char *fmt, ...);
 void
 log_debug(const char *fmt, ...);
 
+/**
+ * Log a debug message.
+ */
+void
+log_error(const char *fmt, ...);
+
 /* }@ */
+
+#define LOG_ERROR_PRINT log_error
+#define LOG_INFO_PRINT log_info
+#define LOG_DEBUG_PRINT log_debug
 
 #ifdef __cplusplus
 }

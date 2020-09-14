@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include <signal.h>
 #include<czmq.h>
+#include<pthread.h>
 
 zloop_t *gTiming_loop = NULL;
 zsock_t *zsocket = NULL;
@@ -49,20 +50,9 @@ static void misc_mgr_signal_handler (int signal_value)
         exit(-1);
     }
 }
-int main()
+
+void *Timing_Router_Task_Entry(void *arg)
 {
-    char buf[20] = {0};
-
-    struct sigaction sa_usr;
-    sa_usr.sa_flags = SA_RESTART;
-    sa_usr.sa_handler = sig_usr;   //信号处理函数
-    sigemptyset(&sa_usr.sa_mask);
-
-    sigaction(SIGUSR1, &sa_usr, NULL);
-    sigaction(SIGUSR2, &sa_usr, NULL);
-
-    printf("My PID is %d\n", getpid());
-
     zsys_init();
 
     zsocket = zsock_new(ZMQ_REP);
@@ -78,6 +68,34 @@ int main()
 
     zsock_destroy(&zsocket);
     zloop_destroy (&gTiming_loop);
+}
+
+int main()
+{
+    char buf[20] = {0};
+    int rc = 0;
+
+    struct sigaction sa_usr1, sa_usr2;
+    sa_usr1.sa_flags = SA_RESTART;
+    sa_usr1.sa_handler = sig_usr;
+    sigemptyset(&sa_usr1.sa_mask);
+    sa_usr2.sa_flags = SA_RESTART;
+    sa_usr2.sa_handler = sig_usr;
+    sigemptyset(&sa_usr2.sa_mask);
+
+    sigaction(SIGUSR1, &sa_usr1, NULL);
+    sigaction(SIGUSR2, &sa_usr2, NULL);
+
+    printf("My PID is %d\n", getpid());
+
+    pthread_t ORURouter_Tid;
+	rc = pthread_create(&ORURouter_Tid, NULL,(void *)Timing_Router_Task_Entry, NULL);
+	if (rc) {
+			printf("%s[%d], create Timing_Router_Task_Entry pthread failed", __FUNCTION__, __LINE__);
+			return -1;
+		}
+    pthread_join(ORURouter_Tid, NULL);
+    printf("main ends\n");
     return 0;
 }
 

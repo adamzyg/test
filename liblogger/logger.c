@@ -261,6 +261,7 @@ static void logger_add_handler(log_handler_t *handler)
 static void logger_log(int log_level, const char *fmt, va_list ap)
 {
 	char date[256]; /* Plenty of space for a date. */
+    char level[8] = {0};
 	char *msg;
 	log_handler_t *handler;
 	struct timeval tv;
@@ -273,15 +274,33 @@ static void logger_log(int log_level, const char *fmt, va_list ap)
 		/* Build the time. */
 		gettimeofday(&tv, NULL);
 		localtime_r((time_t *)&tv.tv_sec, &tm);
+
+        switch(log_level)
+        {
+            case LOG_LEVEL_DEBUG:
+                sprintf(level, "DEBUG");
+                break;
+            case LOG_LEVEL_INFO:
+                sprintf(level, "INFO");
+                break;
+            case LOG_LEVEL_ERROR:
+                sprintf(level, "ERROR");
+                break;
+            default:
+                sprintf(level, "INFO");
+                break;
+        }
+
 		snprintf(date, sizeof(date),
-		    "%d-%02d-%02d %02d:%02d:%02d,%03ld",
+		    "%d-%02d-%02d %02d:%02d:%02d,%03ld %s ",
 		    1900 + tm.tm_year,
 		    tm.tm_mon + 1,
 		    tm.tm_mday,
 		    tm.tm_hour,
 		    tm.tm_min,
 		    tm.tm_sec,
-		    tv.tv_usec / 1000);
+		    tv.tv_usec / 1000,
+            level);
 
 		vasprintf(&msg, fmt, ap);
 
@@ -305,7 +324,15 @@ void log_debug(const char *fmt, ...)
 {
 	va_list ap;
 	va_start(ap, fmt);
-	logger_log(LOG_LEVEL_INFO, fmt, ap);
+	logger_log(LOG_LEVEL_DEBUG, fmt, ap);
+	va_end(ap);
+}
+
+void log_error(const char *fmt, ...)
+{
+	va_list ap;
+	va_start(ap, fmt);
+	logger_log(LOG_LEVEL_ERROR, fmt, ap);
 	va_end(ap);
 }
 
@@ -339,12 +366,19 @@ void logger_remove_handler(log_handler_t *handler)
 		fclose(handler->u.fp_info.fp);
 	case HANDLER_TYPE_ROTATE:
 		/* Close the currently open file. */
-		fclose(handler->u.rotating_info.fp);
+        if(handler->u.rotating_info.fp)
+        {
+            fclose(handler->u.rotating_info.fp);
+        }
 		break;
 	default:
 		break;
 	}
 
 	/* Finally free the handler. */
-	free(handler);
+    if (handler)
+    {
+        free(handler);
+        handler = NULL;
+    }
 }
