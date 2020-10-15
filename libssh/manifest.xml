@@ -1,0 +1,14 @@
+<xml>
+  <manifest version="1.0">
+    <products>
+      <product vendor="CG" code="SC702" name="o-ran-ru2" build-Id="1"/>
+    </products>
+    <builds>
+      <build id="1" bldName="xyz" bldVersion="1.0">
+        <file fileName="BOOT.BIN" fileVersion="ST70R01B001" path="files/BOOT.BIN" checksum="a0e4307445283173803db6d75dc12d17"/>
+        <file fileName="zu4cg_top.bit" fileVersion="7002B011" path="files/zu4cg_top.bit" checksum="96d4bf561231e6e7aa4ccf1e9583beb9"/>
+        <file fileName="image.ub" fileVersion="S701R01B028" path="files/image.ub" checksum="1537834287dda4974a97e1a9138ac3c4"/>
+      </build>
+    </builds>
+  </manifest>
+</xml>
