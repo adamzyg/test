@@ -32,13 +32,12 @@ int get_line(FILE *fp, char *buffer, size_t buflen)
 }
 
 
-int match(char *buf, char *hex_str)
+int match(char *buf, char *pattern, char *hex_str)
 {
     regmatch_t pmatch[2];
     size_t nmatch = 2;
     regex_t reg;
     int rc;
-    const char *pattern = ".*TX-C.*\\s\\+\\([0-9]\\+\\)\\s\\+MBytes.*receiver";		// 正则表达式
     //const char *pattern = "\\([0-9]\\+\\)";		// 正则表达式
 
     if (0 != (rc = regcomp(&reg, pattern, 0)))	//编译正则表达式
@@ -57,6 +56,7 @@ int match(char *buf, char *hex_str)
     {
         printf("%d ---- %d\n", pmatch[1].rm_so, pmatch[1].rm_eo);
         memcpy(hex_str, buf+pmatch[1].rm_so, pmatch[1].rm_eo - pmatch[1].rm_so);
+        hex_str[pmatch[1].rm_eo - pmatch[1].rm_so] = '\0';
         regfree(&reg);
         return 0;
     }
@@ -72,10 +72,19 @@ int main()
     char *str = NULL;
     size_t read_len = 0;
     ssize_t read;
-    char hex_str[9] = {0};
+    char hex_str[32] = {0};
     unsigned int hex = 0x0;
+
+    char *test = "/o-ran-mplane-int:mplane-info/configured-client-info/mplane-ipv4-info[mplane-ipv4='192.168.1.21']/port";
+    char *format = "/o-ran-mplane-int:mplane-info/configured-client-info/mplane-ipv4-info\\[mplane-ipv4='\\([^']\\+\\)'\\]/port";
+    if (match(test, format, hex_str) == 0)
+    {
+        printf("found string: %s\n", hex_str);
+    }
+
     char buf[] = "[  9][TX-C]   0.00-8.42   sec  1000 MBytes   996 Mbits/sec                  receiver";	// 待搜索的字符串
-    if (match(buf, hex_str) == 0)
+    char *pattern = ".*TX-C.*\\s\\+\\([0-9]\\+\\)\\s\\+MBytes.*receiver";		// 正则表达式
+    if (match(buf, pattern, hex_str) == 0)
     {
         printf("found string: %s\n", hex_str);
     }

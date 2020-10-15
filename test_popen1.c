@@ -4,7 +4,7 @@
 int main()
 {
     char cmdStr[100];
-    sprintf(cmdStr, "timeout 15s sleep 20");
+    sprintf(cmdStr, "unzip -od /tmp/download /tmp/download/CGORUS702R01B030.zip");
     FILE *Fpr = popen(cmdStr, "r");
     char buf[128];
     memset(buf, 0, 128);
