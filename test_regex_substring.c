@@ -82,6 +82,13 @@ int main()
         printf("found string: %s\n", hex_str);
     }
 
+    char *tx_array_carriers_test = "/o-ran-uplane-conf:user-plane-configuration/tx-array-carriers[name='haha']/name"; 
+    char tx_array_carriers_name[256] = "/o-ran-uplane-conf:user-plane-configuration/tx-array-carriers\\[name='\\([^']\\+\\)'\\]/name";
+    if (match(tx_array_carriers_test, tx_array_carriers_name, hex_str) == 0)
+    {
+        printf("found string: %s\n", hex_str);
+    }
+
     char buf[] = "[  9][TX-C]   0.00-8.42   sec  1000 MBytes   996 Mbits/sec                  receiver";	// 待搜索的字符串
     char *pattern = ".*TX-C.*\\s\\+\\([0-9]\\+\\)\\s\\+MBytes.*receiver";		// 正则表达式
     if (match(buf, pattern, hex_str) == 0)
