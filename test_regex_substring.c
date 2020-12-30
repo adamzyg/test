@@ -89,6 +89,13 @@ int main()
         printf("found string: %s\n", hex_str);
     }
 
+    char *prb_scs = "/o-ran-uplane-conf:user-plane-configuration/low-level-tx-endpoints[name='sep_txch2']/number-of-prb-per-scs[scs='KHZ_15']/scs";
+    char *prb_pattern = "/o-ran-uplane-conf:user-plane-configuration/low-level-tx-endpoints\\[name='sep_txch2'\\]/number-of-prb-per-scs\\[scs='\\([_A-Z0-9]\\+\\)'\\]/scs";
+    if (!match(prb_scs, prb_pattern, hex_str))
+    {
+        printf("found prb string: %s\n", hex_str);
+    }
+
     char buf[] = "[  9][TX-C]   0.00-8.42   sec  1000 MBytes   996 Mbits/sec                  receiver";	// 待搜索的字符串
     char *pattern = ".*TX-C.*\\s\\+\\([0-9]\\+\\)\\s\\+MBytes.*receiver";		// 正则表达式
     if (match(buf, pattern, hex_str) == 0)

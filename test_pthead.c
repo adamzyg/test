@@ -31,6 +31,12 @@ int main(void)
     {
         printf("cancel thread %lu failed\n", thr1);
     }
+
+    rc = pthread_cancel(0);
+    if (rc)
+    {
+        printf("cancel thread %lu failed\n", 0);
+    }
     return rc;
 }
 

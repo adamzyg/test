@@ -26,8 +26,9 @@ int main()
     {
         printf("Found!!!!!!!!!!!!!!!!!\n");
     }
-
     printf("%s\n", cmdStr);
+
+    printf("NULL = %s\n", NULL);
     return 0;
 }
 

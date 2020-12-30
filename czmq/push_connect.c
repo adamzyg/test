@@ -23,7 +23,14 @@ int main()
     for(int i=1; i<=10; i++)
     {
         sprintf(buf, "%d: Hello, World", i);
-        zstr_send(socket, buf);
+        if (zstr_send(socket, buf)!=0)
+        {
+            printf("send buf %s failed.\n", buf);
+        }
+        else
+        {
+            printf("send buf %s success.\n", buf);
+        }
         sleep(1);
     }
     //zactor_destroy (&auth);
