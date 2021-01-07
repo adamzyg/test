@@ -127,6 +127,13 @@ int main()
     //if(str)
     //    free(str);
     //fclose(fg);
+    char *password_pattern = "/o-ran-usermgmt:users/user\\[name='\\([^']\\+\\)'\\]/name";
+    char *password = "/o-ran-usermgmt:users/user[name='hello$@#']/name";
+    char name[64] = {0};
+    if (!match(password, password_pattern, name))
+    {
+        printf("match name %s\n", name);
+    }
     
     return 0;
 }
