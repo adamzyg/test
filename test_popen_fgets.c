@@ -5,7 +5,7 @@
 int FpgaCli_Selftest_system_show(char * command)
 {
     FILE *fpr = NULL;
-	char buff[128];
+	char buff[128] = {0};
 
     printf("Begin\n");
 	memset(buff, 0, 128);
@@ -16,6 +16,14 @@ int FpgaCli_Selftest_system_show(char * command)
 			printf("%s ", buff);
 		}
 	}
+    else
+    {
+        printf("command %s failed", command);
+    }
+    if (buff[0] == 0)
+    {
+        printf("buff[0] == 0\n");
+    }
     printf("\n");
     printf("End\n");
 
