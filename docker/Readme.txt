@@ -36,3 +36,23 @@ lo        Link encap:Local Loopback
           TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
     collisions:0 txqueuelen:1000 
           RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+
+
+# 在宿主机上
+ps aux | grep /bin/bash
+root     28499  0.0  0.0 19944  3612 pts/0    S    14:15   0:00 /bin/bash
+
+
+$ ls -l /proc/28499/ns/net
+lrwxrwxrwx 1 root root 0 Aug 13 14:18 /proc/28499/ns/net -> net:[4026532281]
+
+$ ls -l  /proc/25686/ns/net
+lrwxrwxrwx 1 root root 0 Aug 13 14:05 /proc/25686/ns/net -> net:[4026532281]
+
+
+
+$ docker run -it --net container:4ddf4638572d busybox ifconfig
+
+
+而如果我指定–net=host，就意味着这个容器不会为进程启用 Network Namespace。这就意味着，这个容器拆除了 Network Namespace 的“隔离墙”，所以，它会和宿主机上的其他普通进程一样，直接共享宿主机的网络栈。这就为容器直接操作和使用宿主机网络提供了一个渠道。
