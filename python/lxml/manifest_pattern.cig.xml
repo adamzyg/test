@@ -1,0 +1,10 @@
+<xml>
+	<manifest version="1.0">
+		<products>
+		</products>
+		<builds>
+			<build id="1" bldName="SC-70X" bldVersion="1.0">
+			</build>
+		</builds>
+	</manifest>
+</xml>
