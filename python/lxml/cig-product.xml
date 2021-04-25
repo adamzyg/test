@@ -1,0 +1,23 @@
+<products>
+    <product vendor="CG" code="SC-701" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-701b" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-701e" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-701be" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-702" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-702b" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-702e" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-702be" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-703" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-703b" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-703e" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-703be" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-704" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-704b" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-704e" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-704be" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-705" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-705b" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-705e" name="o-ran-ru2" build-Id="1"/>
+    <product vendor="CG" code="SC-705be" name="o-ran-ru2" build-Id="1"/>
+</products>
+
