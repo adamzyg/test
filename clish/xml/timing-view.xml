@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                                  http://clish.sourceforge.net/XMLSchema/clish.xsd">
+  <!--=======================================================-->
+    <PLUGIN name="explugin" file="/home/zyg/Documents/5G-RU/klish/klish-2.1.4/examples/plugin/clish_plugin_test.so"/>
+ 	<!--=======================================================>
+    <HOOK name="action" builtin="hello@explugin"/>
+    <-->
+  <VIEW name="timing-view"
+        prompt="klish>timing# ">
+
+    <NAMESPACE ref="root-view"
+               prefix="do"
+               help="true"
+               completion="true"/>
+
+      <COMMAND name="do"
+               help="Import prefix"/>
+
+      <COMMAND name="exit"
+               help="Exit from the configure view"
+               lock="false"
+               view="root-view">
+      </COMMAND>
+<!--========================channel group start===============================-->
+      <COMMAND name="reg-read"
+			   help="reg-read command"
+			   lock="false"
+	           interrupt="true">
+               <PARAM name="reg-address"
+                   help="register address"
+                   ptype="STRING">
+               </PARAM>
+               <ACTION builtin="hello@explugin">hello</ACTION>
+       </COMMAND>
+   </VIEW>
+</CLISH_MODULE>
