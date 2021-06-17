@@ -3,7 +3,7 @@
 
 int main()
 {
-    char *json_string = "{\"test\": \"hello\"}";
+    char *json_string = "{\"test\": [\"test1\", \"test2\"]}";
     cJSON *json, *json_value, *json_timestamp;
     json = cJSON_Parse(json_string);
 
@@ -13,8 +13,14 @@ int main()
     }
     if (cJSON_GetObjectItemCaseSensitive(json, "test") != NULL)
     {
-        printf("test item: %s\n", cJSON_GetObjectItemCaseSensitive(json, "test")->valuestring);
+        cJSON *test = NULL;
+        cJSON_ArrayForEach(test, cJSON_GetObjectItemCaseSensitive(json, "test"))
+        {
+            cJSON_Delete(test);
+            break;
+        }
     }
+    printf("current json: %s\n", cJSON_Print(json));
     cJSON_Delete(json);
     return 0;
 }
