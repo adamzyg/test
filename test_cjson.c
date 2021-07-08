@@ -20,7 +20,13 @@ int main()
             break;
         }
     }
-    printf("current json: %s\n", cJSON_Print(json));
+    // valgrind test memory leak
+    cJSON *test_array = cJSON_CreateArray();
+    cJSON_AddItemToObject(json, "array", test_array);
+    cJSON_AddItemToArray(test_array, cJSON_CreateNumber(123));
+    char *temp = cJSON_Print(json);
+    printf("json = \n%s\n", temp);
+    cJSON_free(temp);
     cJSON_Delete(json);
     return 0;
 }
